@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Effects
 import QtQuick.Layouts
 import "WindowModel.js" as WindowModel
+import "CapturePolicy.js" as CapturePolicy
 import qs.Commons
 import qs.Commons as Commons
 import qs.Ui as Ui
@@ -276,8 +277,8 @@ Ui.BorderSurface {
                     WindowCapture {
                         anchors.fill: parent
                         source: card.controller.captureSourceFor(card.modelData)
-                        active: card.controller.opened && card.inLayout
-                        live: active && !card.controller.lowLoadPreviews
+                        active: CapturePolicy.active(card.controller.opened, card.inLayout)
+                        live: CapturePolicy.live(card.controller.opened, card.inLayout, card.controller.lowLoadPreviews)
                     }
 
                 }
