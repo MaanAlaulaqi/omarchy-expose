@@ -12,14 +12,17 @@ ScreencopyView {
     id: capture
 
     required property var source
+    // Capture only while Exposé is open. In still mode, this also makes each
+    // opening take a fresh frame without keeping hidden captures alive.
+    property bool active: true
     property bool restarting: false
     property int failures: 0
 
-    captureSource: capture.restarting ? null : capture.source
+    captureSource: capture.restarting || !capture.active ? null : capture.source
     paintCursor: false
 
     function scheduleRestart() {
-        if (capture.failures >= 6 || !capture.source)
+        if (!capture.active || capture.failures >= 6 || !capture.source)
             return;
         restartTimer.interval = 250 * Math.pow(2, capture.failures);
         capture.failures++;
@@ -29,6 +32,8 @@ ScreencopyView {
     }
 
     onHasContentChanged: {
+        if (!capture.active)
+            return;
         if (capture.hasContent) {
             capture.failures = 0;
             contentCheck.stop();
@@ -36,7 +41,30 @@ ScreencopyView {
             capture.scheduleRestart();
         }
     }
-    onStopped: capture.scheduleRestart()
+    onStopped: {
+        if (capture.active)
+            capture.scheduleRestart();
+    }
+    onActiveChanged: {
+        if (capture.active) {
+            capture.failures = 0;
+            contentCheck.restart();
+            if (!capture.live)
+                Qt.callLater(function () { capture.captureFrame(); });
+        } else {
+            restartTimer.stop();
+            contentCheck.stop();
+            capture.restarting = false;
+        }
+    }
+    onLiveChanged: {
+        if (capture.active && !capture.live)
+            Qt.callLater(function () { capture.captureFrame(); });
+    }
+    onCaptureSourceChanged: {
+        if (capture.active && capture.captureSource && !capture.live)
+            Qt.callLater(function () { capture.captureFrame(); });
+    }
     // A capture can start mid-resize, such as when closing a window rebuilds
     // the cards while its neighbour grows, and never get a first frame.
     Component.onCompleted: contentCheck.restart()

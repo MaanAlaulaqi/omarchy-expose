@@ -269,7 +269,8 @@ Item {
                                     id: ownCapture
                                     WindowCapture {
                                         source: strip.controller.captureSourceFor(thumbWindow.modelData)
-                                        live: strip.controller.opened
+                                        active: strip.controller.opened
+                                        live: active && !strip.controller.lowLoadPreviews
                                     }
                                 }
                             }
