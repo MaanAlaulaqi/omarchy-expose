@@ -4,6 +4,7 @@ import Quickshell
 import "WindowModel.js" as WindowModel
 import "WorkspaceModel.js" as WorkspaceModel
 import "MonitorTargets.js" as MonitorTargets
+import "CapturePolicy.js" as CapturePolicy
 import qs.Commons
 import qs.Commons as Commons
 import qs.Ui as Ui
@@ -269,7 +270,8 @@ Item {
                                     id: ownCapture
                                     WindowCapture {
                                         source: strip.controller.captureSourceFor(thumbWindow.modelData)
-                                        live: strip.controller.opened
+                                        active: CapturePolicy.active(strip.controller.opened, true)
+                                        live: CapturePolicy.live(strip.controller.opened, true, strip.controller.lowLoadPreviews)
                                     }
                                 }
                             }

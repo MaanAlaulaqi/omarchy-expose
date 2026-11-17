@@ -1266,6 +1266,19 @@ Item {
                         title: "Quick Look and activation"
 
                         SettingRow {
+                            label: "Low-load previews"
+                            description: "Use one still frame per window while Exposé is open, instead of continuously updating live previews. Frames refresh the next time you open Exposé."
+
+                            Item { Layout.fillWidth: true }
+
+                            SettingToggle {
+                                id: lowLoadPreviewsToggle
+                                checked: settingsView.controller.lowLoadPreviews
+                                onToggled: function (checked) { settingsView.controller.setSetting("lowLoadPreviews", checked); }
+                            }
+                        }
+
+                        SettingRow {
                             label: "Selection highlight"
                             description: "Outline borders the selected, hovered, and current windows alike. Lift raises only the window Enter opens and marks the current window with a dot."
 

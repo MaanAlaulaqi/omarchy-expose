@@ -15,6 +15,7 @@ TestCase {
     function test_cancelAndMissingMonitorDoNothing() {
         compare(Targets.destination(null, "DP-1", 1), null);
         compare(Targets.destination({monitor: "DP-2"}, "DP-1", 0), null);
+        compare(Targets.destination({monitor: "DP-2"}, "DP-1", "not-a-workspace"), null);
         compare(Targets.destination({monitor: ""}, "DP-1", 3), null);
         compare(Targets.destination(-98, "DP-1", 3), null);
     }
