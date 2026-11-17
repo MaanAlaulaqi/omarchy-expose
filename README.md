@@ -230,15 +230,3 @@ Based on [Bird's Eye](https://github.com/harel/omarchy-birdseye) by Harel Malka.
 ## License
 
 MIT
-
-## Personal fork: monitor destinations
-
-On multi-monitor setups the workspace strip includes a monitor selector.
-Click a connector name to browse its workspaces, or drag a window over a monitor
-for 300 ms to reveal those workspaces without releasing the mouse. Drop on a
-workspace or + to move there; drop directly on a monitor to move to its active
-workspace. Escape cancels. The window grid's All/This/Each display scope is
-unchanged. On a single display the selector is hidden. This feature uses a
-one-shot hover timer, with no added background polling.
-
-See FORK-NOTES.md for the personal fork's installation and development workflow.
